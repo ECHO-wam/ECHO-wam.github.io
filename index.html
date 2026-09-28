@@ -10,7 +10,9 @@
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(ellipse 850px 580px at 90% 0%,#153451 0%,transparent 70%),radial-gradient(ellipse 680px 520px at 0% 22%,#27192e 0%,transparent 72%),var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; font-size:16px; line-height:1.6; }
-    body::before { content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.3; background-image:radial-gradient(circle at 15% 20%,var(--red) 0 1px,transparent 2px),radial-gradient(circle at 80% 65%,var(--cyan) 0 1px,transparent 2px); background-size:75px 83px,111px 97px; mask-image:linear-gradient(to bottom,#000,transparent 85%); }
+    .stars { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; mask-image:linear-gradient(to bottom,#000,transparent 88%); }
+    .stars i { position:absolute; border-radius:50%; opacity:.08; animation:twinkle 3.8s ease-in-out infinite; }
+    @keyframes twinkle { 0%,100% { opacity:.06; transform:scale(.6); } 40% { opacity:.5; transform:scale(1); } 70% { opacity:.16; transform:scale(.85); } }
     a { color:var(--cyan); text-decoration:none; } a:hover { text-decoration:underline; }
     .container { width:min(1100px,calc(100% - 36px)); margin:0 auto; }
     header { text-align:center; padding:76px 0 55px; }
@@ -21,10 +23,11 @@
     .notes { color:var(--muted); font-size:13px; }
     .links { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:29px 0 0; }
     .pill { display:inline-flex; align-items:center; gap:7px; padding:9px 17px; border:1px solid #38516b; border-radius:999px; background:#14243a; color:var(--ink); font-size:14px; font-weight:650; box-shadow:inset 0 1px #ffffff10; }
-    .logos { display:flex; justify-content:center; align-items:center; gap:22px; margin-bottom:36px; }
-    .logos img { display:block; height:64px; width:auto; }
-    .logos .tile { background:#fff; border-radius:16px; padding:7px; }
-    .logos .blend { mix-blend-mode:screen; }
+    .logos { display:flex; justify-content:space-between; align-items:center; margin-bottom:38px; }
+    .logos-right { display:flex; align-items:center; gap:16px; }
+    .logos img { display:block; height:56px; width:auto; }
+    .logos .tile { background:#fdfdff; border-radius:14px; padding:10px 14px; }
+    .logos .invert { filter:invert(1); }
     .pill:hover { background:#1c3550; border-color:var(--cyan); text-decoration:none; }
     section { border-top:1px solid var(--line); padding:56px 0 64px; }
     h2 { margin:0 0 23px; text-align:left; font-size:clamp(26px,3.2vw,36px); line-height:1.2; letter-spacing:-.025em; }
@@ -69,17 +72,20 @@
     .stat span { margin-top:9px; color:var(--muted); font-size:14px; }
     pre { overflow:auto; margin:0; padding:22px; border:1px solid var(--line); border-radius:12px; background:#0d1522; color:#cbd8e8; font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
     footer { border-top:1px solid var(--line); padding:28px 0 45px; color:#899db6; text-align:center; font-size:13px; }
-    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.logos{gap:14px;margin-bottom:26px}.logos img{height:46px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
+    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.logos{margin-bottom:26px}.logos-right{gap:10px}.logos img{height:38px}.logos .tile{padding:7px 10px;border-radius:10px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
     @media (max-width:480px) { .stats{grid-template-columns:1fr 1fr}.stat{padding:16px}.stat strong{font-size:29px} header::before{font-size:9px;letter-spacing:.18em} }
   </style>
 </head>
 <body>
+  <div class="stars" aria-hidden="true"></div>
   <div class="container">
     <header>
       <div class="logos">
-        <img class="tile" src="assets/channels4_profile.jpg" alt="Astribot">
-        <img src="assets/image_2.png" alt="The Hong Kong University of Science and Technology">
-        <img class="blend" src="assets/zenbot.png" alt="ZENBOT">
+        <img class="tile" src="assets/image_2.png" alt="The Hong Kong University of Science and Technology">
+        <div class="logos-right">
+          <img class="tile" src="assets/channels4_profile.jpg" alt="Astribot">
+          <img class="tile invert" src="assets/zenbot.png" alt="ZENBOT">
+        </div>
       </div>
       <h1>ECHO: Event-Augmented Context with Hindsight and Outlook for Wrist-Only Manipulation</h1>
       <div class="authors">
@@ -218,5 +224,29 @@
     </main>
     <footer>ECHO project page · Event-augmented context for wrist-only manipulation</footer>
   </div>
+  <script>
+  (function () {
+    var field = document.querySelector('.stars');
+    if (!field) return;
+    var colors = ['#ff7890', '#71e6ef'];
+    var n = 54;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('i');
+      var x = Math.random() * 100;
+      var y = Math.random() * 92;
+      var size = 1.4 + Math.random() * 2.2;
+      var c = colors[i % 2];
+      // delay grows with x so the twinkle sweeps left to right like an echo
+      var delay = (x / 100) * 3.8 + Math.random() * 0.5;
+      s.style.left = x + '%';
+      s.style.top = y + '%';
+      s.style.width = s.style.height = size + 'px';
+      s.style.background = c;
+      s.style.boxShadow = '0 0 ' + (size * 3) + 'px ' + c;
+      s.style.animationDelay = delay + 's';
+      field.appendChild(s);
+    }
+  })();
+  </script>
 </body>
 </html>
