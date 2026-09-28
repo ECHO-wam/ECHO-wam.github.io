@@ -21,6 +21,10 @@
     .notes { color:var(--muted); font-size:13px; }
     .links { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:29px 0 0; }
     .pill { display:inline-flex; align-items:center; gap:7px; padding:9px 17px; border:1px solid #38516b; border-radius:999px; background:#14243a; color:var(--ink); font-size:14px; font-weight:650; box-shadow:inset 0 1px #ffffff10; }
+    .logos { display:flex; justify-content:center; align-items:center; gap:22px; margin-bottom:36px; }
+    .logos img { display:block; height:64px; width:auto; }
+    .logos .tile { background:#fff; border-radius:16px; padding:7px; }
+    .logos .blend { mix-blend-mode:screen; }
     .pill:hover { background:#1c3550; border-color:var(--cyan); text-decoration:none; }
     section { border-top:1px solid var(--line); padding:56px 0 64px; }
     h2 { margin:0 0 23px; text-align:left; font-size:clamp(26px,3.2vw,36px); line-height:1.2; letter-spacing:-.025em; }
@@ -65,13 +69,18 @@
     .stat span { margin-top:9px; color:var(--muted); font-size:14px; }
     pre { overflow:auto; margin:0; padding:22px; border:1px solid var(--line); border-radius:12px; background:#0d1522; color:#cbd8e8; font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
     footer { border-top:1px solid var(--line); padding:28px 0 45px; color:#899db6; text-align:center; font-size:13px; }
-    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
+    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.logos{gap:14px;margin-bottom:26px}.logos img{height:46px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
     @media (max-width:480px) { .stats{grid-template-columns:1fr 1fr}.stat{padding:16px}.stat strong{font-size:29px} header::before{font-size:9px;letter-spacing:.18em} }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
+      <div class="logos">
+        <img class="tile" src="assets/channels4_profile.jpg" alt="Astribot">
+        <img src="assets/image_2.png" alt="The Hong Kong University of Science and Technology">
+        <img class="blend" src="assets/zenbot.png" alt="ZENBOT">
+      </div>
       <h1>ECHO: Event-Augmented Context with Hindsight and Outlook for Wrist-Only Manipulation</h1>
       <div class="authors">
         Xinyue Wang<sup>*</sup>, Yicheng Jiang<sup>*</sup>, Zesen Gan, Junhao He, Jiaxu Wang, Junhao Li,<br>
