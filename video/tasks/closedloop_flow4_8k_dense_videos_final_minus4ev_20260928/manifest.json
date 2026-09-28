@@ -1,0 +1,13 @@
+{
+  "created_utc": "2026-09-28T08:09:16.636448+00:00",
+  "content": "Flow4 best_ckpt 8k closed-loop dense rollout videos, six-task roster, successes only",
+  "lighting": "minus4ev",
+  "videos": {
+    "close_fridge": "close_fridge__ep0101_baseline_scaled_minus4ev_v1__success.mp4",
+    "take_umbrella_out_of_umbrella_stand": "take_umbrella_out_of_umbrella_stand__ep0104_baseline_scaled_minus4ev_v1__success.mp4",
+    "toilet_seat_down": "toilet_seat_down__ep0102_baseline_scaled_minus4ev_v1__success.mp4",
+    "close_laptop_lid": "close_laptop_lid__ep0106_baseline_scaled_minus4ev_v1__success.mp4",
+    "take_frame_off_hanger": "take_frame_off_hanger__ep0108_baseline_scaled_minus4ev_v1__success.mp4",
+    "water_plants": "water_plants__ep0112_baseline_scaled_minus4ev_v1__success.mp4"
+  }
+}

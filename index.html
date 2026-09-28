@@ -3,14 +3,211 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ECHO-WAM</title>
+  <meta name="description" content="ECHO: Event-Augmented Context with Hindsight and Outlook for Wrist-Only Manipulation">
+  <title>ECHO: Event-Augmented Context with Hindsight and Outlook</title>
   <style>
-    :root { color-scheme: light dark; }
-    html, body { height: 100%; margin: 0; background: #fff; }
-    @media (prefers-color-scheme: dark) {
-      html, body { background: #000; }
-    }
+    :root { color-scheme:dark; --bg:#070b14; --panel:#101827; --panel2:#0c1423; --ink:#edf4ff; --muted:#a6b4c9; --line:#26364f; --cyan:#71e6ef; --blue:#7eb4ff; --red:#ff7890; --green:#88e6b0; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(ellipse 850px 580px at 90% 0%,#153451 0%,transparent 70%),radial-gradient(ellipse 680px 520px at 0% 22%,#27192e 0%,transparent 72%),var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; font-size:16px; line-height:1.6; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.3; background-image:radial-gradient(circle at 15% 20%,var(--red) 0 1px,transparent 2px),radial-gradient(circle at 80% 65%,var(--cyan) 0 1px,transparent 2px); background-size:75px 83px,111px 97px; mask-image:linear-gradient(to bottom,#000,transparent 85%); }
+    a { color:var(--cyan); text-decoration:none; } a:hover { text-decoration:underline; }
+    .container { width:min(1100px,calc(100% - 36px)); margin:0 auto; }
+    header { text-align:center; padding:76px 0 55px; }
+    header::before { content:"◦  E V E N T   ·   W R I S T   ·   A C T I O N  ◦"; display:block; margin-bottom:22px; color:var(--cyan); font-size:12px; font-weight:750; letter-spacing:.25em; }
+    h1 { margin:0 auto 22px; max-width:970px; font-size:clamp(32px,5vw,54px); line-height:1.12; font-weight:780; letter-spacing:-.04em; text-wrap:balance; }
+    .authors { max-width:930px; margin:0 auto; font-size:17px; line-height:1.8; color:#dbe7f8; }
+    .affiliation { color:var(--muted); font-size:14px; margin-top:12px; }
+    .notes { color:var(--muted); font-size:13px; }
+    .links { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:29px 0 0; }
+    .pill { display:inline-flex; align-items:center; gap:7px; padding:9px 17px; border:1px solid #38516b; border-radius:999px; background:#14243a; color:var(--ink); font-size:14px; font-weight:650; box-shadow:inset 0 1px #ffffff10; }
+    .pill:hover { background:#1c3550; border-color:var(--cyan); text-decoration:none; }
+    section { border-top:1px solid var(--line); padding:56px 0 64px; }
+    h2 { margin:0 0 23px; text-align:left; font-size:clamp(26px,3.2vw,36px); line-height:1.2; letter-spacing:-.025em; }
+    h2::before { content:""; display:inline-block; width:7px; height:23px; margin-right:12px; border-radius:4px; background:linear-gradient(var(--red),var(--cyan)); vertical-align:-2px; }
+    h3 { margin:22px 0 7px; font-size:20px; }
+    p { margin:0 0 16px; color:var(--muted); }
+    .lead { width:100%; font-size:17px; line-height:1.75; color:#cad8e9; }
+    figure { margin:28px 0; }
+    figure img { display:block; width:100%; height:auto; border:1px solid #35506c; border-radius:10px; background:white; }
+    figcaption { margin-top:10px; color:var(--muted); font-size:13px; text-align:center; }
+    .method-text { width:100%; margin:0 0 24px; }
+    .method-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:28px 0 8px; }
+    .method-card { border:1px solid var(--line); border-radius:12px; padding:21px; background:linear-gradient(145deg,#17273b,#0d1727); }
+    .method-card strong { display:block; margin-bottom:7px; color:var(--cyan); font-size:17px; }
+    .method-card p { margin:0; font-size:14px; line-height:1.6; }
+    .task-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:23px; margin-top:28px; }
+    .task-card { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:13px; background:linear-gradient(155deg,#142137,#0b1422); box-shadow:0 14px 40px #0004; padding:10px 10px 16px; }
+    .task-card video { display:block; width:100%; aspect-ratio:16/9; object-fit:contain; background:#03070e; border:1px solid #243b57; border-radius:8px; }
+    .task-card h3 { margin:14px 9px 3px; font-size:17px; }
+    .task-card .config { margin:0 9px; color:#bfcede; font-size:14px; line-height:1.5; }
+    .table-scroll { overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:#0d1727; }
+    .recipe-table { width:100%; min-width:720px; border-collapse:collapse; text-align:left; }
+    .recipe-table th,.recipe-table td { padding:17px 19px; border-bottom:1px solid var(--line); vertical-align:top; }
+    .recipe-table th { color:var(--cyan); background:#15243a; font-size:13px; letter-spacing:.04em; text-transform:uppercase; }
+    .recipe-table td { color:#c8d5e6; font-size:14px; }
+    .recipe-table tr:last-child td { border-bottom:0; }
+    .recipe-table td:first-child { color:var(--ink); font-weight:700; white-space:nowrap; }
+    .sim-task { margin:28px 0 40px; }
+    .sim-task h3 { margin:0 0 12px; font-size:19px; color:var(--ink); }
+    .sim-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .sim-card { min-width:0; padding:10px 10px 14px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(155deg,#142137,#0b1422); }
+    .sim-card video { display:block; width:100%; aspect-ratio:768/418; object-fit:contain; background:#03070e; border-radius:7px; }
+    .sim-card .sim-label { display:flex; align-items:center; gap:9px; margin:12px 7px 0; color:#cbd9e8; font-size:14px; font-weight:650; }
+    .sim-card .sim-label::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 12px var(--cyan); }
+    .sim-card.dark .sim-label::before { background:var(--red); box-shadow:0 0 12px var(--red); }
+    .sim-note { margin-top:6px; font-size:13px; color:var(--muted); }
+    .results-grid { display:grid; grid-template-columns:1.25fr .75fr; gap:24px; align-items:stretch; }
+    .results-grid figure { margin:0; }
+    .stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .stat { display:flex; flex-direction:column; justify-content:center; padding:22px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(145deg,#14243a,#0d1625); }
+    .stat strong { color:var(--green); font-size:35px; line-height:1.1; }
+    .stat span { margin-top:9px; color:var(--muted); font-size:14px; }
+    pre { overflow:auto; margin:0; padding:22px; border:1px solid var(--line); border-radius:12px; background:#0d1522; color:#cbd8e8; font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
+    footer { border-top:1px solid var(--line); padding:28px 0 45px; color:#899db6; text-align:center; font-size:13px; }
+    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
+    @media (max-width:480px) { .stats{grid-template-columns:1fr 1fr}.stat{padding:16px}.stat strong{font-size:29px} header::before{font-size:9px;letter-spacing:.18em} }
   </style>
 </head>
-<body></body>
+<body>
+  <div class="container">
+    <header>
+      <h1>ECHO: Event-Augmented Context with Hindsight and Outlook for Wrist-Only Manipulation</h1>
+      <div class="authors">
+        Xinyue Wang<sup>*</sup>, Yicheng Jiang<sup>*</sup>, Zesen Gan, Junhao He, Jiaxu Wang, Junhao Li,<br>
+        Jingtao Zhang, Tianlun He, Jianan Wang, Isabel Guan<sup>†</sup>, Qiming Shao<sup>†</sup>
+      </div>
+      <div class="affiliation">The Hong Kong University of Science and Technology · The University of British Columbia · MMLab, CUHK · Astribot · ZENBOT</div>
+      <div class="notes"><sup>*</sup>Co-first authors &nbsp; <sup>†</sup>Corresponding authors</div>
+      <div class="links">
+        <a class="pill" href="assets/echo_paper.pdf">📄 Paper</a>
+        <a class="pill" href="../arxiv_submission/root.tex">⌘ Source</a>
+        <a class="pill" href="#real-world">▶ Real-World Demos</a>
+        <a class="pill" href="#simulation">◈ Simulation Demos</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview">
+        <h2>Framework Overview</h2>
+        <div class="method-text">
+          <p class="lead">ECHO is a wrist-only latent world action model that integrates event observations across past, present, and future. A pretrained event encoder extracts motion tokens, trajectory memory preserves off-camera context, and event foresight queries anticipate changes caused by the next action.</p>
+        </div>
+        <figure><img src="assets/event_wam_overview.png" alt="ECHO architecture overview"><figcaption>Figure 1: ECHO combines current event features, off-camera trajectory memory, and future event queries in a single policy prefix.</figcaption></figure>
+        <div class="method-grid">
+          <article class="method-card"><strong>Present · Event features</strong><p>A six-bin event volume is encoded into compact tokens that complement wrist RGB observations.</p></article>
+          <article class="method-card"><strong>Past · Hindsight</strong><p>Visited gripper cells remain addressable after wrist motion moves them outside the current view.</p></article>
+          <article class="method-card"><strong>Future · Outlook</strong><p>Learnable queries predict the event representation of the window covered by the planned action.</p></article>
+        </div>
+      </section>
+
+      <section id="event-encoder">
+        <h2>Event Encoder</h2>
+        <p class="lead">The encoder is built to turn a short wrist-camera event window into compact motion features. Events are accumulated into six temporal bins with signed polarity, then a convolution–attention network maps the volume to 64 spatial latent tokens.</p>
+        <figure><img src="assets/event_encoder.png" alt="Event encoder architecture and pretraining pipeline"><figcaption>Figure 2: The event encoder and its pretraining pipeline. A frozen DINOv3 teacher provides visual feature targets; event features explain the transition between consecutive RGB observations.</figcaption></figure>
+        <div class="method-grid">
+          <article class="method-card"><strong>1 · Encode events</strong><p>Patch embedding, block and grid attention, convolution, downsampling, and full attention extract spatiotemporal motion features from the event volume.</p></article>
+          <article class="method-card"><strong>2 · Predict visual change</strong><p>A warp branch moves existing teacher features, while a synthesis branch models newly revealed content. A learned gate combines them to predict the next RGB teacher feature.</p></article>
+          <article class="method-card"><strong>3 · Learn motion direction</strong><p>Motion-direction contrast brings a duration-jittered event view close to the original and separates a time-reversed view. Variance regularization helps keep the latent features informative.</p></article>
+        </div>
+      </section>
+
+      <section id="training-recipe">
+        <h2>Training Recipe</h2>
+        <p class="lead">ECHO learns event motion features before training the manipulation policy. The stages below show how the encoder, memory, and foresight come together.</p>
+        <div class="table-scroll">
+          <table class="recipe-table">
+            <thead><tr><th>Stage</th><th>What happens</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>Event encoder pretraining</td><td>Learn motion features by predicting visual changes from event streams.</td><td>Give the policy a strong event representation.</td></tr>
+              <tr><td>Policy initialization</td><td>Bring the pretrained encoder into the policy and prepare a fixed encoder for future-event targets.</td><td>Connect current events with action learning and foresight.</td></tr>
+              <tr><td>Joint policy training</td><td>Train action prediction together with trajectory memory and event foresight.</td><td>Use past, present, and anticipated motion for manipulation.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="real-world">
+        <h2>Real-World Robot Experiments</h2>
+        <p class="lead">Two wrist-only tasks compare Pi0 and ECHO under normal and dark lighting. In each video, the task, lighting condition, policy, and outcome are shown directly on the footage.</p>
+        <div class="task-grid">
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_01.mp4" type="video/mp4"></video><h3>Put the toy into the plate</h3><p class="config">Pi0 · normal lighting · success</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_01.mp4" type="video/mp4"></video><h3>Put the toy into the plate</h3><p class="config">ECHO · normal lighting · success</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_02.mp4" type="video/mp4"></video><h3>Put the toy into the plate</h3><p class="config">Pi0 · dark lighting · failure</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_03.mp4" type="video/mp4"></video><h3>Put the toy into the plate</h3><p class="config">ECHO · dark lighting · success</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_04.mp4" type="video/mp4"></video><h3>Ring the bell twice</h3><p class="config">Pi0 · normal lighting · failure</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_05.mp4" type="video/mp4"></video><h3>Ring the bell twice</h3><p class="config">ECHO · normal lighting · success</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_06.mp4" type="video/mp4"></video><h3>Ring the bell twice</h3><p class="config">Pi0 · dark lighting · failure</p></article>
+          <article class="task-card"><video controls playsinline preload="metadata"><source src="video/tasks/task_07.mp4" type="video/mp4"></video><h3>Ring the bell twice</h3><p class="config">ECHO · dark lighting · success</p></article>
+        </div>
+      </section>
+
+      <section id="simulation">
+        <h2>Simulation Experiments</h2>
+        <p class="lead">Selected successful wrist-only RLBench rollouts under normal lighting and a −4 EV exposure shift. Each video shows the simulated RGB view alongside the event stream, so the two sensing modalities can be compared directly.</p>
+        <p class="sim-note">The paired videos are representative rollouts; success rates over the full evaluation set are summarized below.</p>
+        <div class="sim-task">
+          <h3>Close the laptop lid</h3>
+          <div class="sim-grid">
+            <div class="sim-card"><video controls playsinline preload="metadata" poster="assets/simulation/close_laptop_lid_normal.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_normal_20260928/close_laptop_lid__ep0106_normal__success.mp4" type="video/mp4"></video><div class="sim-label">Normal lighting</div></div>
+            <div class="sim-card dark"><video controls playsinline preload="metadata" poster="assets/simulation/close_laptop_lid_dark.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_minus4ev_20260928/close_laptop_lid__ep0106_baseline_scaled_minus4ev_v1__success.mp4" type="video/mp4"></video><div class="sim-label">−4 EV exposure</div></div>
+          </div>
+        </div>
+        <div class="sim-task">
+          <h3>Lower the toilet seat</h3>
+          <div class="sim-grid">
+            <div class="sim-card"><video controls playsinline preload="metadata" poster="assets/simulation/toilet_seat_down_normal.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_normal_20260928/toilet_seat_down__ep0102_normal__success.mp4" type="video/mp4"></video><div class="sim-label">Normal lighting</div></div>
+            <div class="sim-card dark"><video controls playsinline preload="metadata" poster="assets/simulation/toilet_seat_down_dark.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_minus4ev_20260928/toilet_seat_down__ep0102_baseline_scaled_minus4ev_v1__success.mp4" type="video/mp4"></video><div class="sim-label">−4 EV exposure</div></div>
+          </div>
+        </div>
+        <div class="sim-task">
+          <h3>Close the fridge</h3>
+          <div class="sim-grid">
+            <div class="sim-card"><video controls playsinline preload="metadata" poster="assets/simulation/close_fridge_normal.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_normal_20260928/close_fridge__ep0101_normal__success.mp4" type="video/mp4"></video><div class="sim-label">Normal lighting</div></div>
+            <div class="sim-card dark"><video controls playsinline preload="metadata" poster="assets/simulation/close_fridge_dark.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_minus4ev_20260928/close_fridge__ep0101_baseline_scaled_minus4ev_v1__success.mp4" type="video/mp4"></video><div class="sim-label">−4 EV exposure</div></div>
+          </div>
+        </div>
+        <div class="sim-task">
+          <h3>Take the umbrella out of the stand</h3>
+          <div class="sim-grid">
+            <div class="sim-card"><video controls playsinline preload="metadata" poster="assets/simulation/take_umbrella_out_of_umbrella_stand_normal.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_normal_20260928/take_umbrella_out_of_umbrella_stand__ep0104_normal__success.mp4" type="video/mp4"></video><div class="sim-label">Normal lighting</div></div>
+            <div class="sim-card dark"><video controls playsinline preload="metadata" poster="assets/simulation/take_umbrella_out_of_umbrella_stand_dark.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_minus4ev_20260928/take_umbrella_out_of_umbrella_stand__ep0104_baseline_scaled_minus4ev_v1__success.mp4" type="video/mp4"></video><div class="sim-label">−4 EV exposure</div></div>
+          </div>
+        </div>
+        <div class="sim-task">
+          <h3>Take the frame off the hanger</h3>
+          <div class="sim-grid">
+            <div class="sim-card"><video controls playsinline preload="metadata" poster="assets/simulation/take_frame_off_hanger_normal.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_normal_20260928/take_frame_off_hanger__ep0108_normal__success.mp4" type="video/mp4"></video><div class="sim-label">Normal lighting</div></div>
+            <div class="sim-card dark"><video controls playsinline preload="metadata" poster="assets/simulation/take_frame_off_hanger_dark.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_minus4ev_20260928/take_frame_off_hanger__ep0108_baseline_scaled_minus4ev_v1__success.mp4" type="video/mp4"></video><div class="sim-label">−4 EV exposure</div></div>
+          </div>
+        </div>
+        <div class="sim-task">
+          <h3>Water the plants</h3>
+          <div class="sim-grid">
+            <div class="sim-card"><video controls playsinline preload="metadata" poster="assets/simulation/water_plants_normal.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_normal_20260928/water_plants__ep0107_normal__success.mp4" type="video/mp4"></video><div class="sim-label">Normal lighting</div></div>
+            <div class="sim-card dark"><video controls playsinline preload="metadata" poster="assets/simulation/water_plants_dark.jpg"><source src="video/tasks/closedloop_flow4_8k_dense_videos_final_minus4ev_20260928/water_plants__ep0112_baseline_scaled_minus4ev_v1__success.mp4" type="video/mp4"></video><div class="sim-label">−4 EV exposure</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="results">
+        <h2>Performance Highlights</h2>
+        <div class="results-grid">
+          <figure><img src="assets/bar_overall.png" alt="Wrist-only RLBench success rates"><figcaption>Figure 3: Wrist-only RLBench success rates under normal and −4 EV exposure.</figcaption></figure>
+          <div class="stats"><div class="stat"><strong>69.3%</strong><span>ECHO success under normal lighting.</span></div><div class="stat"><strong>53.3%</strong><span>ECHO success under −4 EV exposure.</span></div><div class="stat"><strong>+20.6</strong><span>points over RGB-only wrist.</span></div><div class="stat"><strong>+14.6</strong><span>points over RGB-only wrist in dark lighting.</span></div></div>
+        </div>
+      </section>
+
+      <section id="citation">
+        <h2>Citation</h2>
+        <pre>@article{echo2026,
+  title   = {ECHO: Event-Augmented Context with Hindsight and Outlook for Wrist-Only Manipulation},
+  author  = {Wang, Xinyue and Jiang, Yicheng and Gan, Zesen and others},
+  year    = {2026}
+}</pre>
+      </section>
+    </main>
+    <footer>ECHO project page · Event-augmented context for wrist-only manipulation</footer>
+  </div>
+</body>
 </html>
