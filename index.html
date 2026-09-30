@@ -11,7 +11,7 @@
     html { scroll-behavior:smooth; }
     body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(ellipse 850px 580px at 90% 0%,#153451 0%,transparent 70%),radial-gradient(ellipse 680px 520px at 0% 22%,#27192e 0%,transparent 72%),var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; font-size:16px; line-height:1.6; }
     .stars { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; mask-image:linear-gradient(to bottom,#000,transparent 88%); }
-    .stars i { position:absolute; border-radius:50%; opacity:.08; animation:twinkle 3.8s ease-in-out infinite; }
+    .stars i { position:absolute; opacity:.08; clip-path:polygon(50% 0%,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0% 50%,39% 39%); animation:twinkle 3.8s ease-in-out infinite; }
     @keyframes twinkle { 0%,100% { opacity:.06; transform:scale(.6); } 40% { opacity:.5; transform:scale(1); } 70% { opacity:.16; transform:scale(.85); } }
     a { color:var(--cyan); text-decoration:none; } a:hover { text-decoration:underline; }
     .container { width:min(1100px,calc(100% - 36px)); margin:0 auto; }
@@ -26,6 +26,7 @@
     .logos { display:flex; justify-content:space-between; align-items:center; margin-bottom:38px; }
     .logos-right { display:flex; align-items:center; gap:16px; }
     .logos img { display:block; height:56px; width:auto; }
+    .logos .hkust { height:78px; }
     .logos .tile { background:#05070c; border:1px solid #26364f; border-radius:14px; padding:10px 14px; }
     .pill:hover { background:#1c3550; border-color:var(--cyan); text-decoration:none; }
     section { border-top:1px solid var(--line); padding:56px 0 64px; }
@@ -71,7 +72,7 @@
     .stat span { margin-top:9px; color:var(--muted); font-size:14px; }
     pre { overflow:auto; margin:0; padding:22px; border:1px solid var(--line); border-radius:12px; background:#0d1522; color:#cbd8e8; font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
     footer { border-top:1px solid var(--line); padding:28px 0 45px; color:#899db6; text-align:center; font-size:13px; }
-    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.logos{margin-bottom:26px}.logos-right{gap:10px}.logos img{height:38px}.logos .tile{padding:7px 10px;border-radius:10px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
+    @media (max-width:720px) { .container{width:min(100% - 24px,1100px)} header{padding:47px 0 40px}.authors{font-size:15px}.logos{margin-bottom:26px}.logos-right{gap:10px}.logos img{height:38px}.logos .hkust{height:54px}.logos .tile{padding:7px 10px;border-radius:10px}.method-grid,.results-grid,.task-grid,.sim-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr} section{padding:38px 0 43px} .task-grid{gap:16px} }
     @media (max-width:480px) { .stats{grid-template-columns:1fr 1fr}.stat{padding:16px}.stat strong{font-size:29px} header::before{font-size:9px;letter-spacing:.18em} }
   </style>
 </head>
@@ -80,7 +81,7 @@
   <div class="container">
     <header>
       <div class="logos">
-        <img class="tile" src="assets/logo_hkust.png" alt="The Hong Kong University of Science and Technology">
+        <img class="tile hkust" src="assets/logo_hkust.png" alt="The Hong Kong University of Science and Technology">
         <div class="logos-right">
           <img class="tile" src="assets/logo_astribot.png" alt="Astribot">
           <img class="tile" src="assets/zenbot.png" alt="ZENBOT">
@@ -228,12 +229,12 @@
     var field = document.querySelector('.stars');
     if (!field) return;
     var colors = ['#ff7890', '#71e6ef'];
-    var n = 54;
+    var n = 48;
     for (var i = 0; i < n; i++) {
       var s = document.createElement('i');
       var x = Math.random() * 100;
       var y = Math.random() * 92;
-      var size = 1.4 + Math.random() * 2.2;
+      var size = 4 + Math.random() * 5;
       var c = colors[i % 2];
       // delay grows with x so the twinkle sweeps left to right like an echo
       var delay = (x / 100) * 3.8 + Math.random() * 0.5;
@@ -241,7 +242,7 @@
       s.style.top = y + '%';
       s.style.width = s.style.height = size + 'px';
       s.style.background = c;
-      s.style.boxShadow = '0 0 ' + (size * 3) + 'px ' + c;
+      s.style.filter = 'drop-shadow(0 0 2px ' + c + ')';
       s.style.animationDelay = delay + 's';
       field.appendChild(s);
     }
