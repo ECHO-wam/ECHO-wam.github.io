@@ -26,8 +26,8 @@
     .logos { display:flex; justify-content:space-between; align-items:center; margin-bottom:38px; }
     .logos-right { display:flex; align-items:center; gap:16px; }
     .logos img { display:block; height:56px; width:auto; }
-    .logos .tile { background:#fdfdff; border-radius:14px; padding:10px 14px; }
-    .logos .invert { filter:invert(1); }
+    .logos .tile { background:#05070c; border:1px solid #26364f; border-radius:14px; padding:10px 14px; }
+    .logos .flip { filter:invert(1) hue-rotate(180deg); }
     .pill:hover { background:#1c3550; border-color:var(--cyan); text-decoration:none; }
     section { border-top:1px solid var(--line); padding:56px 0 64px; }
     h2 { margin:0 0 23px; text-align:left; font-size:clamp(26px,3.2vw,36px); line-height:1.2; letter-spacing:-.025em; }
@@ -81,10 +81,10 @@
   <div class="container">
     <header>
       <div class="logos">
-        <img class="tile" src="assets/image_2.png" alt="The Hong Kong University of Science and Technology">
+        <img class="tile" src="assets/logo_hkust.png" alt="The Hong Kong University of Science and Technology">
         <div class="logos-right">
-          <img class="tile" src="assets/channels4_profile.jpg" alt="Astribot">
-          <img class="tile invert" src="assets/zenbot.png" alt="ZENBOT">
+          <img class="tile flip" src="assets/channels4_profile.jpg" alt="Astribot">
+          <img class="tile" src="assets/zenbot.png" alt="ZENBOT">
         </div>
       </div>
       <h1>ECHO: Event-Augmented Context with Hindsight and Outlook for Wrist-Only Manipulation</h1>
